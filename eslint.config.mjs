@@ -1,7 +1,7 @@
-// eslint.config.mjs
 import eslintJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import globals from 'globals';
+import jestPlugin from 'eslint-plugin-jest';
 
 export default tseslint.config(
   // Base JS configuration
@@ -21,11 +21,28 @@ export default tseslint.config(
   {
     files: ['**/*.ts'],
     languageOptions: {
+      globals: {
+        ...globals.jest, // Add Jest globals
+      },
       parser: tseslint.parser,
       parserOptions: {
-        project: true, // This will automatically find tsconfig.json
+        project: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    plugins: {
+      jest: jestPlugin, // Add Jest plugin
+    },
+    rules: {
+      '@typescript-eslint/no-unsafe-call': 'warn', // Adjust as needed
+      '@typescript-eslint/no-unsafe-assignment': 'warn',
+      '@typescript-eslint/no-unsafe-member-access': 'warn',
+    },
+  },
+
+  // Jest-specific rules
+  {
+    files: ['**/*.spec.ts', '**/*.test.ts'],
+    ...jestPlugin.configs.recommended,
   }
 );

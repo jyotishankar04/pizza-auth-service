@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import createHttpError, { HttpError } from 'http-errors';
+import  { HttpError } from 'http-errors';
 import logger from './config/logger';
 
 const app = express();
@@ -7,8 +7,7 @@ const app = express();
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
-    return next(createHttpError(401, 'You are not authenticated'));
-    // return res.send('Welcome to auth-service!');
+    return res.send('Welcome to auth-service!');
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
