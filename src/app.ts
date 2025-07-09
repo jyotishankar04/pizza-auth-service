@@ -1,9 +1,27 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
+import createHttpError, { HttpError } from 'http-errors';
+import logger from './config/logger';
 
 const app = express();
 
-app.get('/', (req, res) => {
-    return res.send('Welcome to auth-service!');
+app.use(express.json());
+
+app.get('/', (req: Request, res: Response, next: NextFunction) => {
+    return next(createHttpError(401, 'You are not authenticated'));
+    // return res.send('Welcome to auth-service!');
+});
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
+    logger.error(err.message);
+    const statusCode = err.statusCode || 500;
+    return res.status(statusCode).json({
+        success: false,
+        message: err.message,
+        type: err.name,
+        path: "",
+        stack: "",
+    });
 });
 
 export default app;
