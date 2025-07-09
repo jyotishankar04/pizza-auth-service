@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
+app.get('/', (req: Request, res: Response) => {
     return res.send('Welcome to auth-service!');
 });
 
